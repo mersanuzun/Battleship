@@ -11,16 +11,25 @@ public class Battleships {
                 if (s.shooting(coorX, coorY)) {
                     message = "Hit";
                     if (s.sank) b.sunkenShip++;
+                    break;
                 }else message = "Miss";
             }
         }
-        if (isGameFinish()) message = "The game is finish.";
+        if (isGameFinish()) message = "All ships are sunken.";
+        show();
         return message;
     }
     public static boolean isGameFinish(){
         if  (b.sunkenShip == b.ships.size()){
             return true;
         }else return false;
+    }
+    public static void show(){
+        for (Ship s : b.ships){
+            for (Cell c : s.shipCoordinates){
+                System.out.println("Name: " + s.name + " Sank= " + s.sank +  " " + c.placeCoorX + " " + c.placeCoorY);
+            }
+        }
     }
     public static void main(String[] args) {
         b = new Board(6); // create a board as a sea
@@ -30,28 +39,17 @@ public class Battleships {
         Ship s4 = new Ship("Destroyer", 3);
         Ship s5 = new Ship("Patrol Boat", 2);
         
-        System.out.println(b.shipPlacement(s5, 3, 1, "V")); // place first ship
-        for (Cell p : s5.shipCoordinates){
-            System.out.print("ship coordinate 2 " + p.placeCoorX + "," + p.placeCoorY);
-            System.out.println();
-        }
-        System.out.println(b.shipPlacement(s3, 1, 1, "V")); // place second ship
-        System.out.println(hit(1,1));        
-        for (Cell p : s3.shipCoordinates){
-            System.out.print("ship coordinate " + p.placeCoorX + "," + p.placeCoorY);
-            System.out.println();
-        }
-        System.out.println(hit(1,2));
-        for (Cell p : s3.shipCoordinates){
-            System.out.print("ship coordinate " + p.placeCoorX + "," + p.placeCoorY);
-            System.out.println();
-        }
-        System.out.println(hit(1,3));
-        for (Cell p : s3.shipCoordinates){
-            System.out.print("ship coordinate " + p.placeCoorX + "," + p.placeCoorY);
-            System.out.println();
-        }
-        System.out.println(hit(3, 1));
-        System.out.println(hit(3, 2));
+        System.out.println(b.shipPlacement(s5, 1, 1, "H")); // place first ship
+        System.out.println(b.shipPlacement(s2, 2, 2, "H")); // place second ship
+        //System.out.println(b.shipPlacement(s2, 4, 3, "V")); // place first ship
+        //System.out.println(b.shipPlacement(s5, 3, 2, "V")); // place first ship
+        show();
+        System.out.println("STARTED");
+        System.out.println(hit(3,1));
+        
+        System.out.println(hit(4,1));
+        System.out.println(hit(2,1));
+        System.out.println(hit(1,1));
+
     }   
 }
