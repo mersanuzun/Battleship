@@ -34,33 +34,53 @@ public class Board {
             System.out.println();
         }
     }
+    private boolean isThereShip(Cell c){
+        boolean result = false;
+        for(Ship ship : this.ships){
+            for(Cell cell : ship.shipCoordinates){
+                if ((c.placeCoorX == cell.placeCoorX) && (c.placeCoorY == cell.placeCoorY)) {
+                    result = true;
+                    break;
+                }
+                if (result) break;
+            }
+        }
+        return result;
+    } 
     public String shipPlacement(Ship s, int coorX, int coorY, String direction){
-        String err = null;
+        String err = s.name + " is placed";
         switch(direction){
             case "H" : 
                 for (int i = 0; i < s.size; i++){
                     if ((coorX > this.edgeLength) || (coorY > this.edgeLength) ||
-                            (coorX + s.size - 1> this.edgeLength) || (coorY + s.size - 1> this.edgeLength)){
-                        err = "The ship is out of the sea.";
+                            (coorX + s.size - 1> this.edgeLength)){
+                        err = s.name + " is out of the sea.";
                         break;
                     }else{
                         Cell c = new Cell(coorX + i, coorY);
-                        s.shipCoordinates.add(c);
+                        if (this.isThereShip(c)) break;
+                        else s.shipCoordinates.add(c);
                     }
                 }
-                this.ships.add(s);
+                if (s.shipCoordinates.size() != 0){
+                    this.ships.add(s);                    
+                }else err = "There is a ship in there.";
                 break;
             case "V" : 
                 for (int i = 0; i < s.size; i++){
-                   if ((coorX > this.edgeLength) || (coorY > this.edgeLength)){
-                        err = "The ship is out of the sea.";
+                    if ((coorX > this.edgeLength) || (coorY > this.edgeLength) ||
+                            (coorY + s.size - 1> this.edgeLength)){
+                        err = s.name + " is out of the sea.";
                         break;
                     }else{
                         Cell c = new Cell(coorX, coorY + i);
-                        s.shipCoordinates.add(c);
+                        if (this.isThereShip(c)) break;
+                        else s.shipCoordinates.add(c);
                     }
                 }
-                this.ships.add(s);
+                if (s.shipCoordinates.size() != 0){
+                    this.ships.add(s);
+                }else err = "There is a ship in there.";
                 break;
         }  
         return err;
